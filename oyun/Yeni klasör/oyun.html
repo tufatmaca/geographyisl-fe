@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arka Plan Örneği</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Ekranın tamamını kaplayacak şekilde ayarlandı */
+            background-image: url('https://images.pexels.com/photos/4715450/pexels-photo-4715450.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- İçerik buraya gelecek -->
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coğrafya Oyunu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #f8f8ff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .game-area {
+      margin-top: 20px;
+    }
+
+    .country-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .country-flag {
+      margin-right: 10px;
+    }
+
+    .input-area {
+      margin-bottom: 20px;
+    }
+
+    #capital-input {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius:20px;
+      font-size: 16px;
+      width: 200px;
+    }
+
+    #submit-button, #restart-button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+
+    #submit-button:hover, #restart-button:hover {
+      background-color: #45a049;
+    }
+
+    .result-area {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Coğrafya Oyunu</h1>
+    <div class="game-area">
+      <div class="country-display">
+        <img src="" alt="Ülke Bayrağı" class="country-flag rounded-circle shadow" width="32" height="32" loading="lazy">
+        <h2 id="country-name">Ülke İsmi</h2>
+      </div>
+      <div class="input-area">
+        <input type="text" id="capital-input" placeholder="Başkenti tahmin et">
+        <button id="submit-button">Gönder</button>
+      </div>
+      <div class="result-area">
+        <p id="result-message">Sonuç mesajı</p>
+        <p>Puan: <span id="score">0</span></p>
+      </div>
+    </div>
+    <button id="restart-button">Yeniden Başlat</button>
+  </div>
+
+  <script>
+    const countries = [
+      "Çin", "Hindistan", "ABD", "Endonezya", "Pakistan", "Brezilya", "Nijerya", "Bangladeş", "Rusya", "Meksika",
+      "Japonya", "Etiyopya", "Filipinler", "Mısır", "Vietnam", "İran", "Almanya", "Türkiye", "Kongo", "Tayland",
+      "Fransa", "İngiltere", "İtalya", "Güney Afrika", "Tanzanya", "Suudi Arabistan", "Arjantin", "Kolombiya",
+      "Güney Kore", "Kanada", "İspanya", "Ukrayna", "Afganistan", "Irak", "Polonya", "Suran", "Avustralya",
+      "Myanmar", "Malezya", "Kenya", "Peru", "Özbekistan", "Venezüella", "Gana", "Somali", "Kuzey Kore", "Suriye"
+    ];
+
+    const countryFlags = {
+      "Çin": "https://flagcdn.com/w80/cn.png",
+      "Hindistan": "https://flagcdn.com/w80/in.png",
+      "ABD": "https://flagcdn.com/w80/us.png",
+      "Endonezya": "https://flagcdn.com/w80/id.png",
+      "Pakistan": "https://flagcdn.com/w80/pk.png",
+      "Brezilya": "https://flagcdn.com/w80/br.png",
+      "Nijerya": "https://flagcdn.com/w80/ng.png",
+      "Bangladeş": "https://flagcdn.com/w80/bd.png",
+      "Rusya": "https://flagcdn.com/w80/ru.png",
+      "Meksika": "https://flagcdn.com/w80/mx.png",
+      "Japonya": "https://flagcdn.com/w80/jp.png",
+      "Etiyopya": "https://flagcdn.com/w80/et.png",
+      "Filipinler": "https://flagcdn.com/w80/ph.png",
+      "Mısır": "https://flagcdn.com/w80/eg.png",
+      "Vietnam": "https://flagcdn.com/w80/vn.png",
+      "İran": "https://flagcdn.com/w80/ir.png",
+      "Almanya": "https://flagcdn.com/w80/de.png",
+      "Türkiye": "https://flagcdn.com/w80/tr.png",
+      "Kongo": "https://flagcdn.com/w80/cd.png",
+      "Tayland": "https://flagcdn.com/w80/th.png",
+      "Fransa": "https://flagcdn.com/w80/fr.png",
+      "İngiltere": "https://flagcdn.com/w80/gb.png",
+      "İtalya": "https://flagcdn.com/w80/it.png",
+      "Güney Afrika": "https://flagcdn.com/w80/za.png",
+      "Tanzanya": "https://flagcdn.com/w80/tz.png",
+      "Suudi Arabistan": "https://flagcdn.com/w80/sa.png",
+      "Arjantin": "https://flagcdn.com/w80/ar.png",
+      "Kolombiya": "https://flagcdn.com/w80/co.png",
+      "Güney Kore": "https://flagcdn.com/w80/kr.png",
+      "Kanada": "https://flagcdn.com/w80/ca.png",
+      "İspanya": "https://flagcdn.com/w80/es.png",
+      "Ukrayna": "https://flagcdn.com/w80/ua.png",
+      "Afganistan": "https://flagcdn.com/w80/af.png",
+      "Irak": "https://flagcdn.com/w80/iq.png",
+      "Polonya": "https://flagcdn.com/w80/pl.png",
+      "Suran": "https://flagcdn.com/w80/sy.png",
+      "Avustralya": "https://flagcdn.com/w80/au.png",
+      "Myanmar": "https://flagcdn.com/w80/mm.png",
+      "Malezya": "https://flagcdn.com/w80/my.png",
+      "Kenya": "https://flagcdn.com/w80/ke.png",
+      "Peru": "https://flagcdn.com/w80/pe.png",
+      "Özbekistan": "https://flagcdn.com/w80/uz.png",
+      "Venezüella": "https://flagcdn.com/w80/ve.png",
+      "Gana": "https://flagcdn.com/w80/gh.png",
+      "Somali": "https://flagcdn.com/w80/so.png",
+      "Kuzey Kore": "https://flagcdn.com/w80/kp.png",
+      "Suriye": "https://flagcdn.com/w80/sy.png"
+    };
+
+    const capital = {
+      "Çin": "Pekin",
+      "Hindistan": "Yeni Delhi",
+      "ABD": "Washington",
+      "Endonezya": "Cakarta",
+      "Pakistan": "İslamabad",
+      "Brezilya": "Brasília",
+      "Nijerya": "Abuja",
+      "Bangladeş": "Dakka",
+      "Rusya": "Moskova",
+      "Meksika": "Meksiko City",
+      "Japonya": "Tokyo",
+      "Etiyopya": "Addis Ababa",
+      "Filipinler": "Manila",
+      "Mısır": "Kahire",
+      "Vietnam": "Hanoi",
+      "İran": "Tahran",
+      "Almanya": "Berlin",
+      "Türkiye": "Ankara",
+      "Kongo": "Kinşasa",
+      "Tayland": "Bangkok",
+      "Fransa": "Paris",
+      "İngiltere": "Londra",
+      "İtalya": "Roma",
+      "Güney Afrika": "Pretoria",
+      "Tanzanya": "Dodoma",
+      "Suudi Arabistan": "Riyad",
+      "Arjantin": "Buenos Aires",
+      "Kolombiya": "Bogota",
+      "Güney Kore": "Seul",
+      "Kanada": "Ottava",
+      "İspanya": "Madrid",
+      "Ukrayna": "Kiev",
+      "Afganistan": "Kabil",
+      "Irak": "Bağdat",
+      "Polonya": "Varşova",
+      "Suran": "Şam",
+      "Avustralya": "Canberra",
+      "Myanmar": "Naypyidaw",
+      "Malezya": "Kuala Lumpur",
+      "Kenya": "Nairobi",
+      "Peru": "Lima",
+      "Özbekistan": "Taşkent",
+      "Venezüella": "Caracas",
+      "Gana": "Akra",
+      "Somali": "Mogadişu",
+      "Kuzey Kore": "Pyongyang",
+      "Suriye": "Şam"
+    };
+
+    // Rastgele bir ülke seçme
+    let currentCountry;
+
+    function selectRandomCountry() {
+      currentCountry = countries[Math.floor(Math.random() * countries.length)];
+      document.getElementById("country-name").textContent = currentCountry;
+      document.querySelector(".country-flag").src = countryFlags[currentCountry];
+    }
+
+    // Kullanıcı tahmini kontrolü
+    let score = 0;
+    const capitalInput = document.getElementById("capital-input");
+    const submitButton = document.getElementById("submit-button");
+    const resultMessage = document.getElementById("result-message");
+    const scoreDisplay = document.getElementById("score");
+
+    submitButton.addEventListener("click", () => {
+      const userGuess = capitalInput.value.trim();
+      if (userGuess.toLowerCase() === capital[currentCountry].toLowerCase()) {
+        resultMessage.textContent = "Doğru!";
+        score++;
+        selectRandomCountry(); // Yeni ülke seç
+      } else {
+        resultMessage.textContent ="Yanlış, tekrar deneyin." ;
+        score--;
+      }
+      scoreDisplay.textContent = score;
+      capitalInput.value = "";
+    });
+
+    // Yeniden başlatma
+    const restartButton = document.getElementById("restart-button");
+    restartButton.addEventListener("click", () => {
+      score = 0;
+      scoreDisplay.textContent = score;
+      selectRandomCountry();
+    });
+
+    // Oyunu başlatma
+    selectRandomCountry();
+  </script>
+</body>
+</html>
